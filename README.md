@@ -81,7 +81,8 @@ There are 64 integration tests. They run against a real Postgres database, becau
 | **Zod** | One schema both validates the request and gives the handler a typed result, so validation can't drift from the types. |
 | **Vitest + Supertest** | Fast integration tests that call the real HTTP stack against real Postgres. |
 | **React + Vite + Tailwind v4 + TanStack Query** | A fast static single-page app. Query handles caching, pagination and refreshing data after writes. The design tokens follow a two-layer (primitive → semantic) system. |
-| **Docker Compose / Railway** | One command to run locally, and the same containers deploy to Railway. |
+| **Docker Compose** | One command runs the database, API and UI locally. |
+| **Render + Vercel + Neon** | Free hosting. The API runs from its Dockerfile on Render, the static UI is on Vercel's CDN, and Neon provides serverless Postgres. Vercel forwards `/api` to Render, so the browser only talks to one domain. |
 
 ## How correctness is guaranteed
 
@@ -169,6 +170,7 @@ backend/
     docs/openapi.ts            OpenAPI 3.1 spec (served at /api/docs)
     app.ts  server.ts
   tests/                       integration tests (real Postgres)
+  Dockerfile
 frontend/
   src/
     components/ui/             design-system primitives (Button, Card, Table, Modal, …)
@@ -176,5 +178,9 @@ frontend/
     features/                  account, transaction and transfer modals, data hooks
     pages/                     Dashboard, Accounts, Account detail, Transfers
     lib/                       API client, cold-start monitor, formatters
+  vercel.json                  Vercel config (SPA routing + /api proxy to Render)
+  Dockerfile, nginx.conf.template   static build for Docker Compose
+docs/                          plan, API reference, assumptions, deployment
 docker-compose.yml             db + api + web
+render.yaml                    Render Blueprint for the API
 ```

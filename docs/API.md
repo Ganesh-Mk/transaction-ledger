@@ -1,6 +1,10 @@
 # API reference
 
-- **Base URL:** `http://localhost:8080` locally, or the deployed API URL.
+- **Base URL:**
+  - Local: `http://localhost:8080`
+  - Live: `https://transaction-ledger-api-fdp4.onrender.com`
+  - Also reachable through the UI's domain: `https://transaction-ledger-console.vercel.app/api/...`
+- **Cold starts:** the live API is on a free tier, so the first request after an idle period can take 30–60 seconds.
 - **Interactive docs:** `/api/docs` (Swagger UI). The raw spec is at `/api/openapi.json` (OpenAPI 3.1).
 
 **Conventions**
@@ -192,7 +196,7 @@ Other transfer endpoints:
 ## curl walkthrough
 
 ```bash
-API=http://localhost:8080
+API=http://localhost:8080   # or https://transaction-ledger-api-fdp4.onrender.com
 
 # create two accounts
 A=$(curl -s -XPOST $API/api/accounts -H 'content-type: application/json' -d '{"name":"Alice"}' | jq -r .data.id)

@@ -4,8 +4,9 @@ A transaction ledger API with a web console. You can create accounts, post credi
 
 | | |
 |---|---|
-| **Live app** | _added after deployment_ |
-| **Live API docs** | _added after deployment_ (`/api/docs`) |
+| **Live app** | https://ganesh-ledger.vercel.app |
+| **Live API** | https://transaction-ledger-api.onrender.com · docs: https://transaction-ledger-api.onrender.com/api/docs |
+| **Source** | https://github.com/Ganesh-Mk/transaction-ledger |
 | **API reference** | [docs/API.md](docs/API.md) · interactive Swagger UI at `/api/docs` |
 | **Assumptions** | [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |
 | **Deployment** | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) |
@@ -142,7 +143,7 @@ The full reference with every status code is in [docs/API.md](docs/API.md).
 
 ## Cold starts (free hosting)
 
-Free-tier instances sleep when idle, so the first request after a pause can take 15–40 s. The web console handles this:
+The API runs on Render's free tier, which sleeps after about 15 minutes idle, and the database is Neon serverless Postgres. The first request after a pause can take 30–60 s. The web console handles this:
 
 - On load it checks `/health`. If there's no answer within 1.5 s, it shows a **"Waking up the server"** panel with progress steps and an elapsed timer, and polls every 2.5 s.
 - The page content appears automatically once the API responds. After 2 minutes without a response it shows a "can't reach the API" message with a retry button.

@@ -22,6 +22,3 @@ The API still allows requests from the Vercel domains directly (`CORS_ORIGIN` in
 
 ## Cold starts
 Render's free instances stop after about 15 minutes idle, and Neon also suspends compute when idle. The first request after a pause can take 30–60 seconds. The UI shows a "Waking up the server" screen until `/health` answers (see README → Cold starts). While the API is waking, Vercel's proxy may answer with 502 or 504. The UI treats those as "still waking" and keeps checking.
-
-## Railway (alternative)
-The same Dockerfiles work on Railway: create a Postgres service, then a service with root `backend/` (`DATABASE_URL=${{Postgres.DATABASE_URL}}`) and one with root `frontend/`.

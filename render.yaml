@@ -1,0 +1,19 @@
+# Render Blueprint: the API as a free Docker web service.
+# Render dashboard → New → Blueprint → select this repo. You'll be asked for DATABASE_URL (Neon).
+services:
+  - type: web
+    name: transaction-ledger-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # paste the Neon connection string when prompted
+      - key: CORS_ORIGIN
+        value: https://transaction-ledger-web.vercel.app

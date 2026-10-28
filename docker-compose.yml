@@ -1,0 +1,46 @@
+# One command to run the whole stack locally:  docker compose up --build
+#   Web UI   -> http://localhost:5173
+#   API      -> http://localhost:8080/api
+#   API docs -> http://localhost:8080/api/docs
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ledger
+      POSTGRES_PASSWORD: ledger
+      POSTGRES_DB: ledger
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/docker/init-test-db.sql:/docker-entrypoint-initdb.d/01-init-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ledger -d ledger"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    environment:
+      PORT: 8080
+      DATABASE_URL: postgres://ledger:ledger@db:5432/ledger
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+    ports:
+      - "5173:8080"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

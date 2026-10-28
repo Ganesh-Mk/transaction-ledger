@@ -15,6 +15,13 @@
 
 The API still allows requests from the Vercel domains directly (`CORS_ORIGIN` in `render.yaml`).
 
+Vercel environment variables:
+
+| Variable | Value | Purpose |
+|---|---|---|
+| `VITE_API_URL` | *(unset)* | Data requests stay same-origin and go through the proxy |
+| `VITE_API_PUBLIC_URL` | `https://transaction-ledger-api-fdp4.onrender.com` | Backend address used for the "API reference" and "Docs" links (Swagger UI) |
+
 ## Redeploying
 - **API:** pushing to `main` redeploys automatically (Blueprint-managed, `autoDeploy: true`).
 - **UI:** run `cd frontend && vercel deploy --prod`.

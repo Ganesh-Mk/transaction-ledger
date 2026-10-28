@@ -10,9 +10,15 @@ import type {
   TransferResult,
 } from "./types";
 
-/** API origin. Empty in dev (Vite proxies /api), set at build time in production. */
+/**
+ * Origin for data requests. Empty means same-origin: Vite proxies /api in dev,
+ * and on Vercel /api is rewritten to the backend.
+ */
 export const API_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
-export const API_DOCS_URL = `${API_URL}/api/docs`;
+
+/** Public backend origin for links people open directly (Swagger docs). Falls back to API_URL. */
+export const API_PUBLIC_URL = (import.meta.env.VITE_API_PUBLIC_URL || API_URL).replace(/\/$/, "");
+export const API_DOCS_URL = `${API_PUBLIC_URL}/api/docs`;
 
 /** Error carrying the API's `{ error: { code, message, details } }` envelope. */
 export class ApiError extends Error {

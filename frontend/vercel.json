@@ -4,6 +4,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/api/:path*/", "destination": "https://transaction-ledger-api-fdp4.onrender.com/api/:path*/" },
     { "source": "/api/:path*", "destination": "https://transaction-ledger-api-fdp4.onrender.com/api/:path*" },
     { "source": "/health", "destination": "https://transaction-ledger-api-fdp4.onrender.com/health" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }

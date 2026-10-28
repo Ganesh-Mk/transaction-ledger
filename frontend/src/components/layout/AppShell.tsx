@@ -60,20 +60,6 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-function SidebarFooter() {
-  return (
-    <div className="border-t border-border p-3">
-      <div className="rounded-lg border border-border bg-surface p-3 shadow-xs">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold tracking-wider text-subtle uppercase">API</span>
-          <ServerStatusPill className="border-0 bg-transparent px-0 py-0 shadow-none" />
-        </div>
-        <p className="mt-1.5 text-[11px] leading-4 text-subtle">Node · Express · PostgreSQL</p>
-      </div>
-    </div>
-  );
-}
-
 export function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
@@ -94,7 +80,6 @@ export function AppShell() {
           <BrandMark />
         </div>
         <NavLinks />
-        <SidebarFooter />
       </aside>
 
       {/* Mobile drawer */}
@@ -114,8 +99,7 @@ export function AppShell() {
               </button>
             </div>
             <NavLinks onNavigate={() => setMobileOpen(false)} />
-            <SidebarFooter />
-          </aside>
+              </aside>
         </div>
       )}
 

@@ -5,7 +5,8 @@ A transaction ledger API with a web console. You can create accounts, post credi
 | | |
 |---|---|
 | **Live app** | https://transaction-ledger-console.vercel.app |
-| **Live API** | https://transaction-ledger-api-fdp4.onrender.com · docs: https://transaction-ledger-api-fdp4.onrender.com/api/docs |
+| **Live API** | https://transaction-ledger-api-fdp4.onrender.com (the app also reaches it through `/api` on its own domain) |
+| **Live API docs** | https://transaction-ledger-api-fdp4.onrender.com/api/docs |
 | **Source** | https://github.com/Ganesh-Mk/transaction-ledger |
 | **API reference** | [docs/API.md](docs/API.md) · interactive Swagger UI at `/api/docs` |
 | **Assumptions** | [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |

@@ -1,32 +1,27 @@
-# Deploying to Railway
+# Deployment
 
-The app runs as three Railway services in one project, all deployed from this repository:
-
-| Service | Source | Notes |
+| Part | Host | URL |
 |---|---|---|
-| **Postgres** | Railway Postgres template | Provides `DATABASE_URL` |
-| **api** | root directory `backend/` (Dockerfile) | Runs migrations on boot |
-| **web** | root directory `frontend/` (Dockerfile) | Static build served by nginx |
+| Web UI | Vercel (`frontend/`) | https://transaction-ledger-console.vercel.app |
+| API | Render free web service (Docker, `render.yaml` Blueprint) | https://transaction-ledger-api-fdp4.onrender.com |
+| Database | Neon serverless Postgres (Singapore) | (`DATABASE_URL` stored in Render) |
 
-The UI and API are separate services on purpose. The static UI starts instantly, so when the API is asleep the UI can still load and show the **"Waking up the server"** screen instead of a blank page.
+## How the UI reaches the API
+`frontend/vercel.json` forwards `/api/*` and `/health` to the Render service, so the browser only ever talks to the Vercel domain.
 
-## Steps
+- **No CORS round-trips:** requests are same-origin.
+- **Not blocked by privacy tools:** browser privacy filters that block third-party requests to `*.onrender.com` don't apply. This was observed during testing.
+- **One public URL** for reviewers.
 
-1. Create a project in Railway and add **Postgres** (New → Database → PostgreSQL).
-2. Add the **api** service: New → GitHub Repo → this repo. Then:
-   - Settings → Root Directory: `backend`. The Dockerfile is detected automatically.
-   - Set these variables:
-     - `DATABASE_URL=${{Postgres.DATABASE_URL}}`
-     - `CORS_ORIGIN=https://<web-domain>` (fill in after step 3; `*` is fine for a demo)
-     - `NODE_ENV=production`
-   - Settings → Networking → Generate Domain.
-   - Settings → Healthcheck Path: `/health`.
-3. Add the **web** service from the same repo:
-   - Root Directory: `frontend`.
-   - Set the variable `VITE_API_URL=https://<api-domain>`. It's used at build time and baked into the bundle.
-   - Generate Domain.
-4. Optional: load demo data from a local shell with `railway run --service api npm run seed:prod`. Alternatively, run `npm run seed` locally with `DATABASE_URL` set to the Postgres public URL.
+The API still allows requests from the Vercel domains directly (`CORS_ORIGIN` in `render.yaml`).
+
+## Redeploying
+- **API:** pushing to `main` redeploys automatically (Blueprint-managed, `autoDeploy: true`).
+- **UI:** run `cd frontend && vercel deploy --prod`.
+- **Schema:** migrations run automatically when the API boots. To load demo data, run `DATABASE_URL=… npm run seed` from `backend/`.
 
 ## Cold starts
+Render's free instances stop after about 15 minutes idle, and Neon also suspends compute when idle. The first request after a pause can take 30–60 seconds. The UI shows a "Waking up the server" screen until `/health` answers (see README → Cold starts). While the API is waking, Vercel's proxy may answer with 502 or 504. The UI treats those as "still waking" and keeps checking.
 
-If **Serverless / App Sleeping** is enabled on the `api` service (useful to save free credits), Railway stops the container after a period of inactivity. The next request then wakes it, which takes a few seconds plus boot time. The UI detects this through `/health` and shows the wake-up screen until the API answers. See "Cold starts" in the README.
+## Railway (alternative)
+The same Dockerfiles work on Railway: create a Postgres service, then a service with root `backend/` (`DATABASE_URL=${{Postgres.DATABASE_URL}}`) and one with root `frontend/`.

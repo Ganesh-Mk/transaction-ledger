@@ -4,7 +4,7 @@ A transaction ledger API with a web console. You can create accounts, post credi
 
 | | |
 |---|---|
-| **Live app** | https://txn-ledger.vercel.app |
+| **Live app** | https://transaction-ledger-console.vercel.app |
 | **Live API** | https://transaction-ledger-api.onrender.com · docs: https://transaction-ledger-api.onrender.com/api/docs |
 | **Source** | https://github.com/Ganesh-Mk/transaction-ledger |
 | **API reference** | [docs/API.md](docs/API.md) · interactive Swagger UI at `/api/docs` |

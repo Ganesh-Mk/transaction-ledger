@@ -16,4 +16,4 @@ services:
       - key: DATABASE_URL
         sync: false # paste the Neon connection string when prompted
       - key: CORS_ORIGIN
-        value: https://txn-ledger.vercel.app,https://transaction-ledger-opal.vercel.app
+        value: https://transaction-ledger-console.vercel.app,https://transaction-ledger-opal.vercel.app
